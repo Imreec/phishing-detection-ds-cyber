@@ -1,6 +1,6 @@
 # CLAUDE.md — Project conventions & context
 
-> **Course:** Data Science Methods in Cyber Security (University of Haifa) · **Instructor:** Dr. Uri Itai.
+> **Course:** Using Data Science Methods in Cybersecurity (University of Haifa) · **Instructor:** Dr. Uri Itai.
 > **Source of truth:** the assignment brief (the project PDF). When in doubt, the PDF wins.
 > Requirement coverage is tracked in [`docs/REQUIREMENTS_CHECKLIST.md`](docs/REQUIREMENTS_CHECKLIST.md);
 > honest scoping caveats in [`docs/KNOWN_LIMITATIONS.md`](docs/KNOWN_LIMITATIONS.md).

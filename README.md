@@ -9,7 +9,7 @@
 > it misses up to ~74% of phishing from an email source it wasn't trained on.** A case study in
 > how in-distribution benchmarks overstate real-world security performance.
 
-*Final project — Data Science Methods in Cyber Security, University of Haifa (Dr. Uri Itai).*
+*Final project — Using Data Science Methods in Cybersecurity, University of Haifa (Dr. Uri Itai).*
 
 ---
 
@@ -150,7 +150,7 @@ pandoc report/report.md -o report/report.pdf --resource-path=report --pdf-engine
 ```
 
 ## Author
-**Imree Cohen** — completed for *Data Science Methods in Cyber Security*, University of Haifa
+**Imree Cohen** — completed for *Using Data Science Methods in Cybersecurity*, University of Haifa
 (instructor: Dr. Uri Itai).
 
 ## License

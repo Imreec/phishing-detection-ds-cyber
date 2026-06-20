@@ -1,6 +1,6 @@
 ---
 title: "Phishing Detection — A Critical Evaluation of a 99%-Accuracy Claim"
-subtitle: "Data Science Methods in Cyber Security · University of Haifa · Dr. Uri Itai"
+subtitle: "Using Data Science Methods in Cybersecurity · University of Haifa · Dr. Uri Itai"
 author: "Imree Cohen"
 date: "2026"
 geometry: margin=1in
