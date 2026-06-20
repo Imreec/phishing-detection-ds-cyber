@@ -11,6 +11,8 @@ toc: true
 ---
 
 
+\newpage
+
 # 1. Summary of the Source
 
 **Problem.** Phishing email remains one of the most effective initial-access vectors in
@@ -39,6 +41,8 @@ SpamAssassin (both classes), and the phishing-only Nazario and Nigerian-Fraud co
 **Methodology employed (by the authors).** A single pooled, stratified train/test split;
 TF-IDF features; a Linear SVM; accuracy-led reporting.
 
+
+\newpage
 
 # 2. Critical Evaluation
 
@@ -102,6 +106,8 @@ When we add those tests, performance degrades substantially. This is the textboo
 a claim that is *true on the benchmark* and a conclusion that is *false in deployment*.
 
 
+\newpage
+
 # 3. Feature Engineering Analysis
 
 **Was feature engineering performed?** Yes. The source represents each email as a **TF-IDF**
@@ -155,6 +161,8 @@ chains), and HTML structure (forms, hidden text) — these encode phishing *mech
 than corpus identity, the natural route to a detector that generalizes.
 
 
+\newpage
+
 # 4. Reproducibility Analysis
 
 - **Can the code be executed?** The source **does not publish training code**, only the
@@ -175,6 +183,8 @@ than corpus identity, the natural route to a detector that generalizes.
   code and exact preprocessing means independent reproduction relies on reasonable
   reconstruction — itself a limitation worth noting for a paper proposing a deployable platform.
 
+
+\newpage
 
 # 5. Experimental Results
 
@@ -314,6 +324,8 @@ metrics belong in the evaluation; accuracy alone is insufficient.
 - **Accuracy** — reported only for comparability with the source; misleading under imbalance.
 
 
+\newpage
+
 # 6. Conclusions
 
 **Key findings.** The paper's 99% claim is **reproducible** and even survives the metrics it
@@ -340,6 +352,8 @@ prevalence-aware metrics; phishing-*mechanic* features (headers/auth results, UR
 HTML) instead of corpus-correlated vocabulary; and de-duplication checks.
 
 
+\newpage
+
 # 7. Executive Summary
 
 We critically evaluated a published phishing-email detector (arXiv:2405.11619) that reports
@@ -359,6 +373,8 @@ is overstated.** We do not recommend deploying the pipeline on a new email popul
 strength of its headline accuracy; as a reproducible baseline and a case study in evaluation
 pitfalls, however, it is instructive.
 
+
+\newpage
 
 # 8. Summing It Up
 
