@@ -7,6 +7,7 @@ label-normalization logic that the rest of the pipeline depends on.
 
 import numpy as np
 import pandas as pd
+import pytest
 
 from src import data
 
@@ -46,8 +47,5 @@ def test_build_text_falls_back_to_body_only():
 
 def test_build_text_raises_without_text_columns():
     df = pd.DataFrame({"label": [1]})
-    try:
+    with pytest.raises(ValueError):
         data._build_text(df)
-        assert False, "expected ValueError"
-    except ValueError:
-        pass

@@ -12,8 +12,8 @@ import pandas as pd
 from sklearn.metrics import (
     accuracy_score,
     confusion_matrix,
-    fbeta_score,
     f1_score,
+    fbeta_score,
     matthews_corrcoef,
     precision_score,
     recall_score,
@@ -61,5 +61,8 @@ def confusion(y_true, y_pred) -> np.ndarray:
 
 def compare_models(fitted: dict, x_test, y_test, beta: float = 2.0) -> pd.DataFrame:
     """Evaluate several fitted models on one test set; rows = models, cols = metrics."""
-    rows = {name: evaluate_model(model, x_test, y_test, beta=beta) for name, model in fitted.items()}
+    rows = {
+        name: evaluate_model(model, x_test, y_test, beta=beta)
+        for name, model in fitted.items()
+    }
     return pd.DataFrame(rows).T

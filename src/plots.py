@@ -104,7 +104,9 @@ def roc_curves(scored: dict, y_test, *, title: str = "ROC curves"):
     return fig, ax
 
 
-def scatter_2d(coords, hue, *, title: str, hue_name: str = "group", sample: int = 5000, seed: int = 0):
+def scatter_2d(
+    coords, hue, *, title: str, hue_name: str = "group", sample: int = 5000, seed: int = 0,
+):
     """2-D scatter of reduced features, colored by a categorical (corpus/label).
 
     Subsamples for legibility; used to show how separable the corpora are.

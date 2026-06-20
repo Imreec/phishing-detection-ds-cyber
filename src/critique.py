@@ -58,8 +58,9 @@ def leave_one_corpus_out(merged: pd.DataFrame, estimators: dict | None = None,
         )
         single_class = test[config.LABEL_COL].nunique() == 1
         fitted = models.fit_all(estimators, x_train, train[config.LABEL_COL].to_numpy())
+        y_test = test[config.LABEL_COL].to_numpy()
         for name, model in fitted.items():
-            metrics = evaluate.evaluate_model(model, x_test, test[config.LABEL_COL].to_numpy(), beta=beta)
+            metrics = evaluate.evaluate_model(model, x_test, y_test, beta=beta)
             if single_class:  # MCC/ROC-AUC are meaningless on a one-class test set
                 metrics["mcc"] = np.nan
                 metrics.pop("roc_auc", None)

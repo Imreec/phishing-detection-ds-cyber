@@ -19,5 +19,6 @@ kagglehub==0.3.4
 jupyter==1.1.1
 ipykernel==6.29.5
 
-# Testing (light sanity checks on the data loaders)
+# Testing & linting (dev)
 pytest==8.3.2
+ruff==0.6.9

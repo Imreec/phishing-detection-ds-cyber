@@ -163,7 +163,9 @@ def build_merged(cache: bool = True) -> pd.DataFrame:
     merged = merged.dropna(subset=[config.LABEL_COL])
     merged[config.LABEL_COL] = merged[config.LABEL_COL].astype(int)
     if len(merged) < before:
-        warnings.warn(f"Dropped {before - len(merged)} rows (empty text or NaN label).")
+        warnings.warn(
+            f"Dropped {before - len(merged)} rows (empty text or NaN label).", stacklevel=2
+        )
 
     if cache:
         config.DATA_PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
