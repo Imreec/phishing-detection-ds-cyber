@@ -1,0 +1,5 @@
+# Normalize line endings: store text as LF in the repo, check out native on Windows.
+* text=auto eol=lf
+
+# Notebooks and data-ish files are treated as text but never diffed noisily.
+*.ipynb text eol=lf
