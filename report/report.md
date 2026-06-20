@@ -142,6 +142,9 @@ only one) and `url_count`/`upper_ratio` as moderately related ($0.58$) — and a
 **duplicated text bodies** (which would leak between train and test). The principled remedy
 where redundancy appears is to drop or merge the duplicate signal (or, for model coefficients,
 watch the Variance Inflation Factor); we also flag duplicate texts in `KNOWN_LIMITATIONS.md`.
+Importantly, these hand-features are **diagnostic only** — the models are trained on TF-IDF, not
+on these columns — so this redundancy is informational and never enters an estimator; were the
+hand-features used as model inputs, we would keep just one of the `char_count`/`word_count` pair.
 
 **Was the process meaningful — mathematically and for cyber?** TF-IDF is the right tool for
 sparse text, and the hand-features operationalize known phishing tells (urgency, links,
@@ -169,7 +172,10 @@ than corpus identity, the natural route to a detector that generalizes.
   is fetched by a script (`src/data.download_data`).
 - **Hidden preprocessing?** The paper's text cleaning is described only at a high level; we
   used a standard subject+body concatenation with TF-IDF's built-in lowercasing/stop-words.
-  Minor differences here are the most likely source of the $\approx$ 0.01 accuracy gap.
+  Minor differences here are the most likely source of the $\approx$ 0.01 accuracy gap — and we
+  **bound** that: across standard preprocessing variants (stop-words on/off, n-gram range,
+  `min_df`, vocabulary size) accuracy stays within a narrow band (notebook §4.1), so the gap is
+  well within preprocessing noise rather than a sign of an irreproducible result.
 - **Overall reproducibility.** *Moderate.* The result reproduces, but the absence of released
   code and exact preprocessing means independent reproduction relies on reasonable
   reconstruction — itself a limitation worth noting for a paper proposing a deployable platform.
