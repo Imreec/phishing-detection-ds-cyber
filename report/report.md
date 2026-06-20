@@ -10,7 +10,6 @@ urlcolor: blue
 toc: true
 ---
 
-\newpage
 
 # 1. Summary of the Source
 
@@ -40,7 +39,6 @@ SpamAssassin (both classes), and the phishing-only Nazario and Nigerian-Fraud co
 **Methodology employed (by the authors).** A single pooled, stratified train/test split;
 TF-IDF features; a Linear SVM; accuracy-led reporting.
 
-\newpage
 
 # 2. Critical Evaluation
 
@@ -103,7 +101,6 @@ which the conclusion would have to hold (unseen sources, realistic prevalence, t
 When we add those tests, performance degrades substantially. This is the textbook gap between
 a claim that is *true on the benchmark* and a conclusion that is *false in deployment*.
 
-\newpage
 
 # 3. Feature Engineering Analysis
 
@@ -139,12 +136,11 @@ information and can destabilize models and explanations (course: *Explainability
 check redundancy two ways: a **Spearman correlation matrix** over the hand-features — which
 flags `char_count` and `word_count` as near-duplicates ($\rho \approx 0.97$, so we would keep
 only one) and `url_count`/`upper_ratio` as moderately related ($0.58$) — and a check for
-**duplicated text bodies** (which would leak between train and test). The principled remedy
-where redundancy appears is to drop or merge the duplicate signal (or, for model coefficients,
-watch the Variance Inflation Factor); we also flag duplicate texts in `KNOWN_LIMITATIONS.md`.
-Importantly, these hand-features are **diagnostic only** — the models are trained on TF-IDF, not
-on these columns — so this redundancy is informational and never enters an estimator; were the
-hand-features used as model inputs, we would keep just one of the `char_count`/`word_count` pair.
+**duplicated text bodies** (which would leak across the split; flagged in
+`KNOWN_LIMITATIONS.md`). The remedy where redundancy matters is to drop/merge the signal or
+watch VIF — but these hand-features are **diagnostic only** (the models use TF-IDF, not these
+columns), so it never enters an estimator; if it did, we would keep one of the
+`char_count`/`word_count` pair.
 
 **Was the process meaningful — mathematically and for cyber?** TF-IDF is the right tool for
 sparse text, and the hand-features operationalize known phishing tells (urgency, links,
@@ -158,7 +154,6 @@ reputation, reply-to mismatch), URL structure (domain age, homoglyph distance, r
 chains), and HTML structure (forms, hidden text) — these encode phishing *mechanics* rather
 than corpus identity, the natural route to a detector that generalizes.
 
-\newpage
 
 # 4. Reproducibility Analysis
 
@@ -180,7 +175,6 @@ than corpus identity, the natural route to a detector that generalizes.
   code and exact preprocessing means independent reproduction relies on reasonable
   reconstruction — itself a limitation worth noting for a paper proposing a deployable platform.
 
-\newpage
 
 # 5. Experimental Results
 
@@ -319,7 +313,6 @@ metrics belong in the evaluation; accuracy alone is insufficient.
 - **ROC-AUC** — threshold-independent ranking quality (1 = perfect, 0.5 = chance).
 - **Accuracy** — reported only for comparability with the source; misleading under imbalance.
 
-\newpage
 
 # 6. Conclusions
 
@@ -346,7 +339,6 @@ accuracy-centric reporting, source leakage, and no released code.
 prevalence-aware metrics; phishing-*mechanic* features (headers/auth results, URL structure,
 HTML) instead of corpus-correlated vocabulary; and de-duplication checks.
 
-\newpage
 
 # 7. Executive Summary
 
@@ -367,7 +359,6 @@ is overstated.** We do not recommend deploying the pipeline on a new email popul
 strength of its headline accuracy; as a reproducible baseline and a case study in evaluation
 pitfalls, however, it is instructive.
 
-\newpage
 
 # 8. Summing It Up
 
