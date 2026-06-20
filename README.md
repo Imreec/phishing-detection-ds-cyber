@@ -1,38 +1,88 @@
-# Phishing Detection — A Critical Evaluation of the "99% Accuracy" Claim
+# 🎣 Phishing Detection — A Critical Evaluation of a "99% Accuracy" Claim
 
-> Final project for *Data Science Methods in Cyber Security* (University of Haifa, Dr. Uri Itai).
+![Python](https://img.shields.io/badge/Python-3.11-blue)
+![scikit--learn](https://img.shields.io/badge/scikit--learn-1.5-orange)
+![Report](https://img.shields.io/badge/report-PDF-red)
+![Status](https://img.shields.io/badge/reproducible-yes-brightgreen)
 
-## Project description
-This project critically evaluates a published phishing-email-detection result that
-reports **99.1% accuracy** using TF-IDF + a Linear SVM on a merged multi-corpus
-dataset. We reproduce the result and then test a single question:
+> **A published phishing detector reports 99.1% accuracy. We reproduce it exactly — then show
+> it misses up to ~74% of phishing from an email source it wasn't trained on.** A case study in
+> how in-distribution benchmarks overstate real-world security performance.
 
-> **Does the reported 99% reflect generalizable phishing detection, or only
-> in-distribution performance on this particular pool of corpora?**
+*Final project — Data Science Methods in Cyber Security, University of Haifa (Dr. Uri Itai).*
 
-We reproduce the headline result exactly, then show that it does **not generalize**:
-under a leave-one-corpus-out protocol (testing on an email source unseen in
-training — the realistic deployment scenario), performance degrades sharply, with
-recall on an unseen phishing corpus collapsing to ~0.47. We trace this to the model
-relying on **source-, era-, and campaign-specific artifacts** rather than
-generalizable phishing semantics, and we re-evaluate honestly with imbalance-aware
-metrics (F1, MCC, F-beta, ROC-AUC) and realistic class prevalence. Our verdict: the
-claim is reproducible, but the conclusion of real-world efficacy is overstated.
+---
+
+## TL;DR
+
+We critically evaluate **[arXiv:2405.11619](https://arxiv.org/abs/2405.11619)** (TF-IDF + Linear
+SVM on the six-corpus *Phish No More* dataset). The headline reproduces — and even the metrics
+the authors omitted (MCC, ROC-AUC) look great **in-distribution**. But the paper never tests
+**generalization**. When we do, the story changes:
+
+| Evaluation | Result | What it means |
+|---|---|---|
+| **Reproduced (pooled split)** | Acc **0.9905**, F1 0.9909, MCC 0.9811, ROC-AUC 0.9994 | The claim is real *on this split* |
+| **Leave-one-corpus-out (MCC)** | **0.56–0.86** vs 0.98 | Collapses on unseen sources — *across all 4 models* |
+| **Recall on unseen Nazario phishing** | **0.26–0.48** | Misses **half or more** of real phishing from a new source |
+| **Predict the *corpus* from text** | **95.8%** accuracy | The model can read *source*, not just phishing |
+| **Precision @ realistic 5% prevalence** | 0.83 in-dist → **0.14** cross-corpus | Out of distribution, most alerts are false alarms |
+
+**Verdict:** the claim is *reproducible*, but the conclusion of real-world efficacy is
+**overstated** — the model substantially learns *source and era artifacts*, not generalizable
+phishing semantics.
+
+---
+
+## The one figure that tells the story
+
+Train on every corpus but one, test on the held-out (unseen) source. In-distribution MCC is
+~0.98; cross-corpus it collapses — and it's **model-agnostic**, so it's the data/task, not the
+classifier:
+
+![Leave-one-corpus-out MCC collapse](figures/loco_mcc.png)
+
+Why? Because the corpora are easy to tell apart by text alone (the dataset stitches together
+distinct sources), and most "legitimate" signal is really *"looks like the Enron corpus."*
+
+| The dataset is source-confounded… | …so honest prevalence bites out-of-distribution |
+|---|---|
+| ![corpus × label](figures/corpus_label_crosstab.png) | ![precision vs prevalence](figures/precision_prevalence.png) |
+
+---
+
+## What we did
+
+1. **Reproduce** the paper's TF-IDF + Linear SVM pipeline (and 3 more models) — confirm ~99%.
+2. **Quantify the confound** (Cramér's V = 0.31 — *not* a trivial corpus = label leak).
+3. **Provenance classifier** — predict the corpus from text (95.8%).
+4. **Token autopsy** — the model's top weights are era/source artifacts (`enron`, `2004`, `2005`).
+5. **Leave-one-corpus-out** across 4 models — the decisive generalization test.
+6. **Temporal split** (within CEAS) and **realistic-prevalence** re-evaluation.
+7. **Honest metrics** throughout: F1, Fβ, **MCC**, **ROC-AUC**, confusion matrices, error analysis.
+
+📄 **Full analysis: [`report/report.pdf`](report/report.pdf)** · 📓 **Notebook: [`notebooks/phishing_critique.ipynb`](notebooks/phishing_critique.ipynb)**
+
+---
+
+## Repository layout
+
+```
+report/report.pdf            Full written report (8 sections)
+notebooks/phishing_critique.ipynb   Complete, executable, documented analysis
+src/        config · data · features · models · evaluate · critique · plots
+figures/    All generated figures (embedded above and in the report)
+tests/      Sanity tests for the data loaders
+docs/       REQUIREMENTS_CHECKLIST.md · KNOWN_LIMITATIONS.md
+```
 
 ## Links
-- **Source under evaluation:** Al-Subaiey et al., *"Novel Interpretable and Robust
-  Web-based AI Platform for Phishing Email Detection"* — https://arxiv.org/abs/2405.11619
-- **Original implementation:** the paper publishes no training-code repository; it
-  provides the dataset and a described TF-IDF + SVM pipeline (reproducibility is
-  analyzed in the report).
-- **Dataset source:** "Phishing Email Dataset" (Phish No More), Kaggle —
+- **Source under evaluation:** Al-Subaiey et al., *"Novel Interpretable and Robust Web-based AI
+  Platform for Phishing Email Detection"* — https://arxiv.org/abs/2405.11619
+- **Original implementation:** the paper publishes no training-code repository; it provides the
+  dataset and a described TF-IDF + SVM pipeline (reproducibility is analyzed in the report, §4).
+- **Dataset source:** "Phishing Email Dataset" (*Phish No More*), Kaggle —
   https://www.kaggle.com/datasets/naserabdullahalam/phishing-email-dataset
-
-## Repository contents
-- `report/report.pdf` — full written report (8 sections).
-- `notebooks/` — the complete, executable, documented notebook.
-- `src/` — supporting modules (data, features, models, evaluation, plots).
-- `requirements.txt` — pinned dependencies.
 
 ## Execution instructions
 Requires Python 3.11.
@@ -40,38 +90,23 @@ Requires Python 3.11.
 ```bash
 # 1. Environment
 python -m venv .venv
-source .venv/Scripts/activate        # Windows (Git Bash);  use .venv/bin/activate on macOS/Linux
+source .venv/Scripts/activate        # Windows (Git Bash); use .venv/bin/activate on macOS/Linux
 pip install -r requirements.txt
 
 # 2. Get the data (needs a free Kaggle account / API token)
 python -c "from src.data import download_data; download_data()"
-#    Manual fallback: download the dataset from the Kaggle link above and unzip
-#    its CSVs into data/raw/.
+#    Manual fallback: download from the Kaggle link above and unzip the CSVs into data/raw/.
 
 # 3. Run the analysis
-jupyter notebook notebooks/
+jupyter notebook notebooks/phishing_critique.ipynb
 ```
 
-## Key findings
-- **The 99% claim reproduces** almost exactly (TF-IDF + LinearSVC: accuracy 0.9905, F1 0.9909),
-  and even the metrics the source omitted are strong *in-distribution* (MCC 0.981, ROC-AUC 0.999),
-  consistently across four model families.
-- **But it does not generalize.** Under leave-one-corpus-out, MCC collapses from ~0.98 to
-  **0.56–0.86** on unseen mixed corpora, and **recall on the unseen Nazario corpus falls to
-  0.26–0.48** — a "99%" detector missing half or more of phishing from a new source. The
-  collapse is **model-agnostic**.
-- **The model learned source identity, not phishing.** A classifier predicts the corpus from
-  text at **95.8% accuracy**, and the model's "legitimate" tokens are Enron/business artifacts.
-- **Temporal drift** (within CEAS): MCC 0.66 (past→future) vs 0.995 (random split).
-- **Realistic prevalence:** at 5% phishing, cross-corpus precision drops to **0.14**.
-- **Verdict:** the claim is reproducible, but the conclusion of real-world efficacy is overstated.
-
-See [`report/report.pdf`](report/) for the full analysis and [`docs/KNOWN_LIMITATIONS.md`](docs/KNOWN_LIMITATIONS.md) for scoping caveats.
+Run the tests with `pytest`, and the linter with `ruff check src tests`.
 
 ## Rebuilding the report (optional)
-The report PDF is committed at [`report/report.pdf`](report/report.pdf). To regenerate it from
-`report/report.md` you need [Pandoc](https://pandoc.org) and any LaTeX engine (e.g. Tectonic,
-MiKTeX, or TeX Live):
+The PDF is committed at [`report/report.pdf`](report/report.pdf). To regenerate it from
+`report/report.md` you need [Pandoc](https://pandoc.org) and any LaTeX engine (Tectonic, MiKTeX,
+or TeX Live):
 
 ```bash
 pandoc report/report.md -o report/report.pdf --resource-path=report --pdf-engine=<engine>
