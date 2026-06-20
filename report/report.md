@@ -143,20 +143,17 @@ only one) and `url_count`/`upper_ratio` as moderately related ($0.58$) — and a
 where redundancy appears is to drop or merge the duplicate signal (or, for model coefficients,
 watch the Variance Inflation Factor); we also flag duplicate texts in `KNOWN_LIMITATIONS.md`.
 
-**Was the process meaningful — mathematically and for cyber?** Mathematically, TF-IDF is the
-right tool for sparse high-cardinality text, and the hand-features operationalize known
-phishing tells (urgency, links, SHOUTING) from the Social-Engineering lecture — though on this
-data it is message **length** and **punctuation**, not links or urgency, that actually separate
-the classes. For cyber, the
-key insight is *negative*: the most important "legitimate" tokens are organizational identity
-markers (e.g. `enron`, desk/abbreviation tokens), which are **not** generalizable phishing
+**Was the process meaningful — mathematically and for cyber?** TF-IDF is the right tool for
+sparse text, and the hand-features operationalize known phishing tells (urgency, links,
+SHOUTING) — though here it is **length** and **punctuation**, not links or urgency, that
+separate the classes. The key insight is *negative*: the top "legitimate" tokens are
+organizational identity markers (`enron`, desk abbreviations), **not** generalizable phishing
 signals — a feature-engineering "success" that is really source memorization.
 
-**Additional features that could help.** Header/metadata signals (SPF/DKIM/DMARC results,
-sender-domain reputation, reply-to mismatch), URL structure (domain age, look-alike/homoglyph
-distance, redirect chains), and HTML structure (forms, hidden text). These encode
-phishing *mechanics* rather than corpus identity, and would be the natural route to a detector
-that actually generalizes.
+**Additional features that could help.** Header/auth signals (SPF/DKIM/DMARC, sender-domain
+reputation, reply-to mismatch), URL structure (domain age, homoglyph distance, redirect
+chains), and HTML structure (forms, hidden text) — these encode phishing *mechanics* rather
+than corpus identity, the natural route to a detector that generalizes.
 
 \newpage
 
