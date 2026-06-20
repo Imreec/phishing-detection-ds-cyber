@@ -51,6 +51,28 @@ distinct sources), and most "legitimate" signal is really *"looks like the Enron
 
 ---
 
+## Why the evaluation matters: pooled vs. cross-corpus
+
+The flaw is methodological. The original paper evaluates on a **random pooled split** (which
+flatters the model); we test **generalization to an unseen source**:
+
+```mermaid
+graph TD
+    subgraph A["Original paper - pooled random split"]
+        a1[All 6 corpora merged] --> a2[Random 80/20]
+        a2 --> a3[Train]
+        a2 --> a4[Test]
+        a3 --> a5[Evaluate]
+        a4 --> a5
+        a5 --> a6(["~99% accuracy (looks great)"])
+    end
+    subgraph B["Our critique - leave-one-corpus-out"]
+        b1[Train on 5 corpora] --> b3[Evaluate on the unseen corpus]
+        b2[1 held-out corpus] --> b3
+        b3 --> b4(["Collapse: MCC 0.56-0.86, Nazario recall 0.26-0.48"])
+    end
+```
+
 ## What we did
 
 1. **Reproduce** the paper's TF-IDF + Linear SVM pipeline (and 3 more models) — confirm ~99%.
@@ -84,6 +106,21 @@ docs/       REQUIREMENTS_CHECKLIST.md · KNOWN_LIMITATIONS.md
 - **Dataset source:** "Phishing Email Dataset" (*Phish No More*), Kaggle —
   https://www.kaggle.com/datasets/naserabdullahalam/phishing-email-dataset
 
+## Citation
+BibTeX for the source paper under evaluation:
+
+```bibtex
+@misc{alsubaiey2024phishing,
+  title         = {Novel Interpretable and Robust Web-based AI Platform for Phishing Email Detection},
+  author        = {Al-Subaiey, Abdulla and Al-Thani, Mohammed and Alam, Naser Abdullah and
+                   Antora, Kaniz Fatema and Khandakar, Amith and Zaman, SM Ashfaq Uz},
+  year          = {2024},
+  eprint        = {2405.11619},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG}
+}
+```
+
 ## Execution instructions
 Requires Python 3.11.
 
@@ -111,6 +148,10 @@ or TeX Live):
 ```bash
 pandoc report/report.md -o report/report.pdf --resource-path=report --pdf-engine=<engine>
 ```
+
+## Author
+**Imree Cohen** — completed for *Data Science Methods in Cyber Security*, University of Haifa
+(instructor: Dr. Uri Itai).
 
 ## License
 See [LICENSE](LICENSE).
