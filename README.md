@@ -57,20 +57,20 @@ The flaw is methodological. The original paper evaluates on a **random pooled sp
 flatters the model); we test **generalization to an unseen source**:
 
 ```mermaid
+%%{init: {"themeVariables": {"fontSize": "22px"}}}%%
 graph TD
-    subgraph A["Original paper - pooled random split"]
-        a1[All 6 corpora merged] --> a2[Random 80/20]
-        a2 --> a3[Train]
-        a2 --> a4[Test]
-        a3 --> a5[Evaluate]
-        a4 --> a5
-        a5 --> a6(["~99% accuracy (looks great)"])
+    subgraph A["Original paper: pooled random split (flatters the model)"]
+        a1[All 6 corpora merged] --> a2[Random 80/20 split]
+        a2 --> a3[Train] --> a5[Evaluate]
+        a2 --> a4[Test] --> a5
+        a5 --> a6(["~99% accuracy"])
     end
-    subgraph B["Our critique - leave-one-corpus-out"]
+    subgraph B["Our critique: leave-one-corpus-out (realistic)"]
         b1[Train on 5 corpora] --> b3[Evaluate on the unseen corpus]
         b2[1 held-out corpus] --> b3
-        b3 --> b4(["Collapse: MCC 0.56-0.86, Nazario recall 0.26-0.48"])
+        b3 --> b4(["Collapse: MCC 0.56-0.86, recall 0.26-0.48"])
     end
+    A ~~~ B
 ```
 
 ## What we did
