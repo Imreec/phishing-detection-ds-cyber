@@ -33,22 +33,22 @@ Legend: ✅ done · 🔄 in progress · ⬜ pending · location = report section
 ## Python notebook — required content
 | # | Section | Status | Where |
 |---|---|---|---|
-| 1 | Data Loading (load, inspect, size, types, temporal, missing, index/column sanity, single-value/duplicate features) | ⬜ | notebook §1 |
-| 2 | EDA (distributions, missing, outliers, temporal, crosstab/group-by, **justified correlation**, class imbalance/prevalence, visualizations) | ⬜ | notebook §2 |
-| 3 | Feature Engineering (encoding+why, scaling, creation, selection, dim. reduction) | ⬜ | notebook §3 |
-| 4 | Model Training (≥2 models — we train 4) | ⬜ | notebook §4 |
-| 5 | Evaluation (every metric: math definition + cyber interpretation; justify chosen/excluded) | ⬜ | notebook §5 |
-| 6 | Error Analysis (failures, error patterns, cyber implications, FP/FN tradeoff) | ⬜ | notebook §6 |
-| — | Complete, executable, clearly documented; runs top-to-bottom | ⬜ | notebook |
+| 1 | Data Loading (load, inspect, size, types, temporal, missing, index/column sanity, single-value/duplicate features) | ✅ | notebook §1 |
+| 2 | EDA (distributions, missing, outliers, temporal, crosstab/group-by, **justified correlation**, class imbalance/prevalence, visualizations) | ✅ | notebook §2 |
+| 3 | Feature Engineering (encoding+why, scaling, creation, selection, dim. reduction) | ✅ | notebook §3 |
+| 4 | Model Training (≥2 models — we train 4) | ✅ | notebook §4 |
+| 5 | Evaluation (every metric: math definition + cyber interpretation; justify chosen/excluded) | 🔄 | notebook §5 (suite done; full math in report §5) |
+| 6 | Error Analysis (failures, error patterns, cyber implications, FP/FN tradeoff) | ✅ | notebook §7 |
+| — | Complete, executable, clearly documented; runs top-to-bottom | ✅ | notebook (executes, 0 errors) |
 
 ## Code quality
 | Requirement | Status | Where |
 |---|---|---|
-| Short, focused functions | 🔄 | `src/` |
-| Meaningful variable names | 🔄 | `src/` |
-| No unnecessary loops; proper pandas/numpy/sklearn | 🔄 | `src/` |
-| Clear separation: preprocessing / EDA / training / evaluation | ✅ | `src/{data,features,models,evaluate}.py` |
-| English comments; no duplicated code | 🔄 | `src/` |
+| Short, focused functions | ✅ | `src/` |
+| Meaningful variable names | ✅ | `src/` |
+| No unnecessary loops; proper pandas/numpy/sklearn | ✅ | `src/` (vectorized) |
+| Clear separation: preprocessing / EDA / training / evaluation | ✅ | `src/{data,features,models,evaluate,critique}.py` |
+| English comments; no duplicated code | ✅ | `src/` |
 | Fixed random seeds | ✅ | `src/config.py` (RANDOM_SEED=42) |
 | Train/test split or cross-validation | ✅ | `src/data.split_data` (stratified) |
 
