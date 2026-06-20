@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import re
 
+import numpy as np
 import pandas as pd
 from scipy.sparse import csr_matrix
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -48,8 +49,9 @@ def add_text_stats(df: pd.DataFrame, text_col: str = config.TEXT_COL) -> pd.Data
     out["url_count"] = text.str.count(_URL_RE)
     out["urgency_count"] = text.str.lower().str.count(_URGENCY_RE)
     out["exclaim_count"] = text.str.count("!")
-    letters = text.str.count(r"[A-Za-z]").replace(0, pd.NA)
-    out["upper_ratio"] = (text.str.count(r"[A-Z]") / letters).fillna(0.0)
+    letters = text.str.count(r"[A-Za-z]")
+    uppers = text.str.count(r"[A-Z]")
+    out["upper_ratio"] = np.where(letters > 0, uppers / letters.where(letters > 0, 1), 0.0)
     return out
 
 
