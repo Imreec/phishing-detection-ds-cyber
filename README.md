@@ -53,7 +53,29 @@ jupyter notebook notebooks/
 ```
 
 ## Key findings
-_(Filled in after the analysis — see Phase 4.)_
+- **The 99% claim reproduces** almost exactly (TF-IDF + LinearSVC: accuracy 0.9905, F1 0.9909),
+  and even the metrics the source omitted are strong *in-distribution* (MCC 0.981, ROC-AUC 0.999),
+  consistently across four model families.
+- **But it does not generalize.** Under leave-one-corpus-out, MCC collapses from ~0.98 to
+  **0.56–0.86** on unseen mixed corpora, and **recall on the unseen Nazario corpus falls to
+  0.26–0.48** — a "99%" detector missing half or more of phishing from a new source. The
+  collapse is **model-agnostic**.
+- **The model learned source identity, not phishing.** A classifier predicts the corpus from
+  text at **95.8% accuracy**, and the model's "legitimate" tokens are Enron/business artifacts.
+- **Temporal drift** (within CEAS): MCC 0.66 (past→future) vs 0.995 (random split).
+- **Realistic prevalence:** at 5% phishing, cross-corpus precision drops to **0.14**.
+- **Verdict:** the claim is reproducible, but the conclusion of real-world efficacy is overstated.
+
+See [`report/report.pdf`](report/) for the full analysis and [`docs/KNOWN_LIMITATIONS.md`](docs/KNOWN_LIMITATIONS.md) for scoping caveats.
+
+## Rebuilding the report (optional)
+The report PDF is committed at [`report/report.pdf`](report/report.pdf). To regenerate it from
+`report/report.md` you need [Pandoc](https://pandoc.org) and any LaTeX engine (e.g. Tectonic,
+MiKTeX, or TeX Live):
+
+```bash
+pandoc report/report.md -o report/report.pdf --resource-path=report --pdf-engine=<engine>
+```
 
 ## License
 See [LICENSE](LICENSE).

@@ -20,15 +20,15 @@ Legend: ✅ done · 🔄 in progress · ⬜ pending · location = report section
 ## PDF report — required sections
 | # | Section | Status | Where |
 |---|---|---|---|
-| 1 | Summary of the Source (problem, importance, solution, dataset, methodology) | ⬜ | `report/report.md` §1 |
-| 2 | Critical Evaluation (claims, evidence, methodology, weaknesses, conclusions) | ⬜ | `report/report.md` §2 |
-| 3 | Feature Engineering Analysis (transforms, redundancy, meaningfulness, extra features) | ⬜ | `report/report.md` §3 |
-| 4 | Reproducibility Analysis (runs? deps? hidden preprocessing? overall) | ⬜ | `report/report.md` §4 |
-| 5 | Experimental Results (experiments, modifications, models, metrics, results) | ⬜ | `report/report.md` §5 |
-| 6 | Conclusions (findings, lessons, strengths/weaknesses, future work) | ⬜ | `report/report.md` §6 |
-| 7 | Executive Summary (~1 page) | ⬜ | `report/report.md` §7 |
-| 8 | Summing It Up (problem, source, dataset, methodology, findings, claims held?, insights, recommendation, conclusion) | ⬜ | `report/report.md` §8 |
-| — | Written in English, PDF | ⬜ | Pandoc build |
+| 1 | Summary of the Source (problem, importance, solution, dataset, methodology) | ✅ | `report/report.md` §1 |
+| 2 | Critical Evaluation (claims, evidence, methodology, weaknesses, conclusions) | ✅ | `report/report.md` §2 |
+| 3 | Feature Engineering Analysis (transforms, redundancy, meaningfulness, extra features) | ✅ | `report/report.md` §3 |
+| 4 | Reproducibility Analysis (runs? deps? hidden preprocessing? overall) | ✅ | `report/report.md` §4 |
+| 5 | Experimental Results (experiments, modifications, models, metrics, results) | ✅ | `report/report.md` §5 |
+| 6 | Conclusions (findings, lessons, strengths/weaknesses, future work) | ✅ | `report/report.md` §6 |
+| 7 | Executive Summary (~1 page) | ✅ | `report/report.md` §7 |
+| 8 | Summing It Up (problem, source, dataset, methodology, findings, claims held?, insights, recommendation, conclusion) | ✅ | `report/report.md` §8 |
+| — | Written in English, PDF | ✅ | `report/report.pdf` (14 pp, Pandoc+Tectonic) |
 
 ## Python notebook — required content
 | # | Section | Status | Where |
@@ -56,8 +56,8 @@ Legend: ✅ done · 🔄 in progress · ⬜ pending · location = report section
 | Requirement | Status | Where |
 |---|---|---|
 | Public GitHub repo | ✅ | github.com/Imreec/phishing-detection-ds-cyber |
-| PDF report | ⬜ | `report/report.pdf` |
-| Python notebook | ⬜ | `notebooks/` |
+| PDF report | ✅ | `report/report.pdf` |
+| Python notebook | ✅ | `notebooks/phishing_critique.ipynb` |
 | Supporting code files | ✅ | `src/` |
 | README: description | ✅ | `README.md` |
 | README: link to source | ✅ | `README.md` |
