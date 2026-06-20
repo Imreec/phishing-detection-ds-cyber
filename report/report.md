@@ -223,10 +223,14 @@ that lets a label classifier lean on source identity.
 
 ## 5.4 Experiment 3 — Token autopsy
 
-The reproduced model's most *legitimate*-leaning TF-IDF tokens are dominated by Enron/business
-artifacts (organization and desk names, energy-trading jargon), not by anything intrinsic to
-"not phishing." A substantial part of "legitimate" therefore means "looks like the Enron
-corpus" — source memorization, not phishing semantics.
+Both sides of the model's vocabulary are dominated by **artifacts rather than phishing
+semantics**. The most *legitimate*-leaning tokens are Enron identity terms (`enron`, personal
+names such as `vince`/`louise`, energy-trading jargon) — "legitimate" largely means "looks
+like the Enron corpus." Tellingly, the top *phishing*-leaning tokens are **era and campaign
+artifacts too** — calendar years (`2004`, `2005`) and corpus-specific spam tokens (`sightings`,
+`monkey`, `jose`) — with only a couple of genuinely phishing-like words (`click`, `remove`).
+The model is keying on *when* and *where* an email is from far more than on phishing language:
+source (and era) memorization, not phishing detection.
 
 ## 5.5 Experiment 4 — Leave-one-corpus-out (the decisive test)
 
@@ -257,16 +261,17 @@ is broken" but "performance is strongly source-dependent, and the headline hides
 
 ## 5.6 Experiment 5 — Temporal generalization (within CEAS)
 
-Training on the earliest 80% of dated CEAS emails and testing on the latest 20%:
+CEAS-08 ships with corrupt timestamps (years ranging 1980–2100), so we first restrict it to a
+plausible window (2007–2009), then train on the earliest 80% by date and test on the latest 20%:
 
 | Metric | Temporal (past$\rightarrow$future) | Random split (same sizes) |
 |---|---|---|
-| Accuracy | 0.810 | 0.998 |
-| Recall | 0.631 | 0.998 |
-| F1 | 0.765 | 0.998 |
-| MCC | 0.658 | 0.995 |
+| Accuracy | 0.809 | 0.999 |
+| Recall | 0.629 | 0.999 |
+| F1 | 0.764 | 0.999 |
+| MCC | 0.657 | 0.997 |
 
-Temporal evaluation reveals **drift** that a random split entirely hides (MCC 0.66 vs 0.995).
+Temporal evaluation reveals **drift** that a random split entirely hides (MCC 0.66 vs 0.997).
 Caveat: era and corpus are entangled in this dataset, so this within-corpus test is the
 cleanest temporal signal available.
 
