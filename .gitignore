@@ -30,6 +30,9 @@ kaggle.json
 # Strategic planning docs (kept local, not submitted)
 docs/planning/
 
+# Notebook builder scripts (the executed .ipynb is the committed deliverable)
+notebooks/_build*.py
+
 # Test caches
 .pytest_cache/
 .ruff_cache/
