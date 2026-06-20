@@ -8,6 +8,7 @@ the metrics that expose imbalance and threshold sensitivity.
 from __future__ import annotations
 
 import numpy as np
+import pandas as pd
 from sklearn.metrics import (
     accuracy_score,
     confusion_matrix,
@@ -56,3 +57,9 @@ def evaluate_model(model, x_test, y_test, beta: float = 2.0) -> dict[str, float]
 def confusion(y_true, y_pred) -> np.ndarray:
     """2x2 confusion matrix with fixed label order [0=legit, 1=phishing]."""
     return confusion_matrix(y_true, y_pred, labels=[0, 1])
+
+
+def compare_models(fitted: dict, x_test, y_test, beta: float = 2.0) -> pd.DataFrame:
+    """Evaluate several fitted models on one test set; rows = models, cols = metrics."""
+    rows = {name: evaluate_model(model, x_test, y_test, beta=beta) for name, model in fitted.items()}
+    return pd.DataFrame(rows).T

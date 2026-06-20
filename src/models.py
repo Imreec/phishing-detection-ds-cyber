@@ -7,6 +7,7 @@ model-agnostic (it is the data, not the model).
 
 from __future__ import annotations
 
+from sklearn.base import clone
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import MultinomialNB
@@ -38,3 +39,12 @@ def train(estimator, x_train, y_train):
     """Fit an estimator and return it (kept tiny for a uniform call site)."""
     estimator.fit(x_train, y_train)
     return estimator
+
+
+def fit_all(estimators: dict, x_train, y_train) -> dict:
+    """Clone and fit each estimator, returning {name: fitted_model}.
+
+    Cloning keeps the input definitions pristine so the same dict can be reused
+    across experiments (e.g. the in-distribution fit and later cross-corpus fits).
+    """
+    return {name: clone(est).fit(x_train, y_train) for name, est in estimators.items()}

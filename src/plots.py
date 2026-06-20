@@ -9,7 +9,9 @@ from __future__ import annotations
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+import numpy as np
 import seaborn as sns
+from sklearn.metrics import RocCurveDisplay
 
 from . import config
 
@@ -76,4 +78,47 @@ def heatmap(
     fig, ax = plt.subplots(figsize=(7, 5))
     sns.heatmap(matrix, annot=annot, fmt=fmt, cmap=cmap, ax=ax, center=center)
     ax.set_title(title)
+    return fig, ax
+
+
+def confusion_heatmap(cm, *, title: str):
+    """Render a 2x2 confusion matrix (rows=true, cols=pred; 0=legit, 1=phishing)."""
+    names = ["legitimate", "phishing"]
+    fig, ax = plt.subplots(figsize=(4.5, 4))
+    sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", center=None, cbar=False,
+                xticklabels=names, yticklabels=names, ax=ax)
+    ax.set_xlabel("predicted")
+    ax.set_ylabel("true")
+    ax.set_title(title)
+    return fig, ax
+
+
+def roc_curves(scored: dict, y_test, *, title: str = "ROC curves"):
+    """Overlay ROC curves from {model_name: continuous_scores}."""
+    fig, ax = plt.subplots(figsize=(6, 5))
+    for name, scores in scored.items():
+        if scores is not None:
+            RocCurveDisplay.from_predictions(y_test, scores, name=name, ax=ax)
+    ax.plot([0, 1], [0, 1], linestyle="--", color="grey", linewidth=1)
+    ax.set_title(title)
+    return fig, ax
+
+
+def scatter_2d(coords, hue, *, title: str, hue_name: str = "group", sample: int = 5000, seed: int = 0):
+    """2-D scatter of reduced features, colored by a categorical (corpus/label).
+
+    Subsamples for legibility; used to show how separable the corpora are.
+    """
+    rng = np.random.default_rng(seed)
+    n = coords.shape[0]
+    idx = rng.choice(n, size=min(sample, n), replace=False)
+    fig, ax = plt.subplots(figsize=(7, 6))
+    sns.scatterplot(
+        x=coords[idx, 0], y=coords[idx, 1], hue=np.asarray(hue)[idx],
+        s=10, alpha=0.5, linewidth=0, ax=ax,
+    )
+    ax.set_xlabel("component 1")
+    ax.set_ylabel("component 2")
+    ax.set_title(title)
+    ax.legend(title=hue_name, markerscale=2, fontsize=8)
     return fig, ax
